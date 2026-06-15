@@ -37,4 +37,11 @@ class PhpBinaryHandlerTest extends TestCase {
     public function testUnserialize($in, $expected) {
         $this->assertEquals($expected, $this->_handler->unserialize($in));
     }
+
+    public function testUnserializePreventsObjectInstantiation() {
+        $data = $this->_handler->unserialize("\x06" . 'object' . 'O:8:"stdClass":0:{}');
+
+        $this->assertNotInstanceOf('stdClass', $data['object']);
+        $this->assertInstanceOf('__PHP_Incomplete_Class', $data['object']);
+    }
 }

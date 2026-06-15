@@ -22,10 +22,9 @@ class PhpBinaryHandler implements HandlerInterface {
             $offset += 1;
             $varname = substr($raw, $offset, $num);
             $offset += $num;
-
             // try to unserialize one piece of data from current offset, ignoring any warnings for trailing data on PHP 8.3+
             // @link https://wiki.php.net/rfc/unserialize_warn_on_trailing_data
-            $data = @unserialize(substr($raw, $offset));
+            $data = @unserialize(substr($raw, $offset), ['allowed_classes' => false]);
 
             $returnData[$varname] = $data;
             $offset += strlen(serialize($data));

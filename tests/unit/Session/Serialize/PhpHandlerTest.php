@@ -44,4 +44,11 @@ class PhpHandlerTest extends TestCase {
     public function testSerialize($serialized, $original) {
         $this->assertEquals($serialized, $this->_handler->serialize($original));
     }
+
+    public function testUnserializePreventsObjectInstantiation() {
+        $data = $this->_handler->unserialize('object|O:8:"stdClass":0:{}');
+
+        $this->assertNotInstanceOf('stdClass', $data['object']);
+        $this->assertInstanceOf('__PHP_Incomplete_Class', $data['object']);
+    }
 }
